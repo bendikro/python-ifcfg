@@ -43,6 +43,9 @@ def get_parser(**kw):
         elif distro in ['Darwin', 'MacOSX']:
             from .parser import MacOSXParser
             parser = MacOSXParser(ifconfig=ifconfig)
+        elif distro in ['FreeBSD']:
+            from .parser import FreeBSDParser
+            parser = FreeBSDParser(ifconfig=ifconfig)
         else:
             raise exc.IfcfgParserError("Unknown distro type '%s'." % distro)
 

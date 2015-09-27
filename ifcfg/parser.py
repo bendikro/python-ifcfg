@@ -171,3 +171,27 @@ class MacOSXParser(UnixParser):
             if device_dict['netmask'] is not None:
                 netmask = self.interfaces[device]['netmask']
                 self.interfaces[device]['netmask'] = hex2dotted(netmask)
+
+class FreeBSDParser(MacOSXParser):
+
+    def __init__(self, *args, **kw):
+        super(FreeBSDParser, self).__init__(*args, **kw)
+
+    @property
+    def default_interface(self):
+        """
+        Returns the default interface device.
+
+        """
+        out, err, ret = exec_cmd(['netstat', '-rn', '-f', 'inet'])
+        #print "out:", out
+        lines = out.splitlines()
+        iface = None
+        for line in lines[2:]:
+            if line.split()[0] == 'default':
+                iface = line.split()[-1]
+
+        for interface in self.interfaces:
+            if interface == iface:
+                return self.interfaces[interface]
+        return None # pragma: nocover
