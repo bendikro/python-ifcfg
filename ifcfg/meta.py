@@ -13,7 +13,7 @@ class Meta(object):
     def _merge(self, dict_obj):
         for key, value in dict_obj.items():
             setattr(self, key, value)
-            
+
 class MetaMixin(object):
     """
     Mixin that provides the Meta class support to add settings to instances
